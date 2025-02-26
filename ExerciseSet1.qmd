@@ -1,0 +1,107 @@
+# Part 1
+
+library(tidyverse)
+
+```{r}
+anscombe_quartet = readRDS("anscombe quartet.rds")
+```
+
+**Displaying the structure of a list:**
+
+The string function allows a variable and the type of data that it contains to be displayed.
+
+```{r}
+str(anscombe_quartet)
+```
+
+**Summary Statistics**
+
+```{r}
+anscombe_quartet %>% 
+  group_by(dataset) %>% 
+  summarise(
+    mean_x    = mean(x),
+    mean_y    = mean(y),
+    sd_x      = sd(x),
+    sd_y      = sd(y),
+    min_x     = min(x),
+    min_y     = min(y),
+    max_x     = max(x),
+    max_y     = max(y),
+    crrltn    = cor(x, y)
+  )
+```
+
+**What do the summary statistics tell us about the different data sets?**
+
+The summary statistics suggest that the data sets have similar characteristics, since the values for the means and standard deviations of x, y and correlations are congruent. Althought, there is greater variation in the minimum and maximum values for x and y, overall, the data sets appear similar.
+
+**Graphical Representation of the Data**
+
+```{r}
+require(ggplot2)
+```
+
+```{r}
+ ggplot(anscombe_quartet, aes(x=x,y=y)) +
+  geom_point() + 
+  geom_smooth(method = "lm",formula = "y ~ x") +
+  facet_wrap(~dataset)
+```
+
+**Saving a ggplot**
+
+```{r}
+ggsave("ExerciseSet1.png", device = "png", 
+       width = 5, height = 5, units = "in")
+```
+
+**What do the plots tell us about the different data sets? Describe the relationship between x and y in the differernt data sets.** Visualizing the data reveals that despite similarities in the summary statistics the spread of the data and trends in each data set is disparate. Data set 1 and 3 both show a linear relationship, although data set 3 has a tighter spread of data with only one outlier. By contrast data set 2 shows a \_\_ relationship. Meanwhile data set 4 shows...
+
+# **Part 2**
+
+```{r}
+datasaurus_doz = readRDS("datasaurus_dozen.rds")
+```
+
+```{r}
+glimpse(datasaurus_doz)
+```
+
+**Summary Statistics**
+
+```{r}
+datasaurus_doz %>% 
+  group_by(dataset) %>% 
+  summarise(
+    mean_x    = mean(x),
+    mean_y    = mean(y),
+    sd_x      = sd(x),
+    sd_y      = sd(y),
+    min_x     = min(x),
+    min_y     = min(y),
+    max_x     = max(x),
+    max_y     = max(y),
+    crrltn    = cor(x, y)
+  )
+```
+
+Similar to the data sets in Task 1, the data sets in Task 2 appear to have very similar mean and standard deviation values. Ostensibly it appears that the various data sets have a similar spread of data and trends. However, there is some variation in the minimum and maximum values and the correlations.
+
+**Graphical Representation of the Data**
+
+```{r, fig.width=15, fig.height=10}
+ ggplot(datasaurus_doz, aes(x=x, y=y)) +
+  geom_point() + 
+  geom_smooth(method = "lm",formula = "y ~ x") +
+  facet_wrap(~dataset) 
+```
+
+\*\* Saving the plot \*\*
+
+```{r}
+ggsave("ExerciseSet2.png", device = "png", 
+       width = 5, height = 5, units = "in")
+```
+
+Plotting the data sets reveal that only reviewing summary statistics can create an false impression of a data set. To understand the true relationship between the data, it is necessary to create a visual representation.
